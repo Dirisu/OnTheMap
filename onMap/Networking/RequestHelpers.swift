@@ -11,23 +11,23 @@ class RequestHelpers {
     
     class func taskForPOSTRequest<ResponseType: Decodable>(url: URL, apiType: String, responseType: ResponseType.Type, body: String, httpMethod: String, completion: @escaping (ResponseType?, Error?) -> Void) {
         var request = URLRequest(url: url)
-        if httpMethod == "POST" {
-            request.httpMethod = "POST"
-        } else {
-            request.httpMethod = "PUT"
-        }
-        if apiType == "Udacity" {
-            request.addValue("application/json", forHTTPHeaderField: "Accept")
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        } else {
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        }
+//        if httpMethod == "POST" {
+        request.httpMethod = "POST"
+//        } else {
+//            request.httpMethod = "PUT"
+//        }
+//        if apiType == "Udacity" {
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        } else {
+//            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        }
         request.httpBody = body.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if error != nil {
                 completion(nil, error)
             }
-            guard let data = data else {
+            guard let data = data, error == nil else {
                 DispatchQueue.main.async {
                     completion(nil, error)
                 }

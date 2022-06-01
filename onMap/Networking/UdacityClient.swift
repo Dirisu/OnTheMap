@@ -35,14 +35,14 @@ class UdacityClient: NSObject {
             case .udacityLogin:
                 return Endpoints.base + "/session"
             case .getStudentLocations:
-                return Endpoints.base + "/StudentLocation?limit=100&order=-updatedAt"
+                return Endpoints.base + "/StudentLocation?&order=-updatedAt"
             case .addLocation:
                 return Endpoints.base + "/StudentLocation"
             case .updateLocation:
                 return Endpoints.base + "/StudentLocation/" + Auth.objectId
             case .getLoggedInUserProfile:
                 return Endpoints.base + "/users/" + Auth.key
-
+            
             }
         }
 
@@ -62,7 +62,7 @@ class UdacityClient: NSObject {
                 Auth.key = response.account.key
                 getLoggedInUserProfile(completion: { (success, error) in
                     if success {
-                        print("Logged in user's profile fetched.")
+                        print("Logged in successfully")
                     }
                 })
                 completion(true, nil)
@@ -109,5 +109,15 @@ class UdacityClient: NSObject {
             completion()
         }
         task.resume()
+    }
+    
+    class func getStudentLocations(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
+        RequestHelpers.taskForGETRequest(url: Endpoints.getStudentLocations.url, apiType: "Parse", responseType: StudentLocation.self) { (response, error) in
+            if let response = response {
+                completion(response.results, nil)
+            } else {
+                completion([], error)
+            }
+        }
     }
 }
