@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70081AD22847AD2C009247EE /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70081AD12847AD2C009247EE /* TableViewCell.swift */; };
+		70081AD42847B620009247EE /* UIControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70081AD32847B620009247EE /* UIControllerExtension.swift */; };
+		70081AD628481357009247EE /* StudentsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70081AD528481357009247EE /* StudentsData.swift */; };
 		70120DF228441750009747A4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70120DF128441750009747A4 /* MapViewController.swift */; };
 		70120DF428441901009747A4 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70120DF328441901009747A4 /* TableViewController.swift */; };
 		70120DF628441B65009747A4 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70120DF528441B65009747A4 /* AddLocationViewController.swift */; };
@@ -31,6 +34,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		70081AD12847AD2C009247EE /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		70081AD32847B620009247EE /* UIControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControllerExtension.swift; sourceTree = "<group>"; };
+		70081AD528481357009247EE /* StudentsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsData.swift; sourceTree = "<group>"; };
 		70120DF128441750009747A4 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		70120DF328441901009747A4 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		70120DF528441B65009747A4 /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +81,8 @@
 				70120DF328441901009747A4 /* TableViewController.swift */,
 				70120DF528441B65009747A4 /* AddLocationViewController.swift */,
 				70120DF728441CE4009747A4 /* FinishAddLocationViewController.swift */,
+				70081AD12847AD2C009247EE /* TableViewCell.swift */,
+				70081AD32847B620009247EE /* UIControllerExtension.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -99,6 +107,7 @@
 				70120E052844ACCF009747A4 /* Login.swift */,
 				70120E072844AE85009747A4 /* UserProfile.swift */,
 				70120E2D28469531009747A4 /* Keys.swift */,
+				70081AD528481357009247EE /* StudentsData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -219,16 +228,19 @@
 				70120DFA2844A5BC009747A4 /* StudentLocation.swift in Sources */,
 				70120E002844AA69009747A4 /* PostStudentLocation.swift in Sources */,
 				70120E082844AE85009747A4 /* UserProfile.swift in Sources */,
+				70081AD22847AD2C009247EE /* TableViewCell.swift in Sources */,
 				70DA37DF2840EFFE0099DA8A /* LoginViewController.swift in Sources */,
 				70120DF628441B65009747A4 /* AddLocationViewController.swift in Sources */,
 				70DA37DB2840EFFE0099DA8A /* AppDelegate.swift in Sources */,
 				70120E0C2844C458009747A4 /* RequestHelpers.swift in Sources */,
+				70081AD42847B620009247EE /* UIControllerExtension.swift in Sources */,
 				70120DFC2844A5EB009747A4 /* Location.swift in Sources */,
 				70120DF828441CE4009747A4 /* FinishAddLocationViewController.swift in Sources */,
 				70120E062844ACCF009747A4 /* Login.swift in Sources */,
 				70120E042844AB77009747A4 /* Session.swift in Sources */,
 				70120DF228441750009747A4 /* MapViewController.swift in Sources */,
 				70120DF428441901009747A4 /* TableViewController.swift in Sources */,
+				70081AD628481357009247EE /* StudentsData.swift in Sources */,
 				70120E022844AAB5009747A4 /* UpdateStudentLocation.swift in Sources */,
 				70120DFE2844A953009747A4 /* StudentInformation.swift in Sources */,
 				70DA37DD2840EFFE0099DA8A /* SceneDelegate.swift in Sources */,

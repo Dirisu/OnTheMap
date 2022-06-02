@@ -13,13 +13,19 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var locations = [StudentInformation]()
+    
+    
+//    var locations = [StudentInformation]()
+//    StudentsData.sharedInstance().students
+    
+    var locations = StudentsData().students
     var annotations = [MKPointAnnotation]()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        mapView.delegate = self
         // Do any additional setup after loading the view.
     }
     
@@ -28,7 +34,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         getStudentsPins()
     }
     
-    // MARK: Logout
     
     @IBAction func logout(_ sender: UIBarButtonItem) {
         self.activityIndicator.startAnimating()
@@ -48,7 +53,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func getStudentsPins() {
-//        self.activityIndicator.startAnimating()
+        self.activityIndicator.startAnimating()
         UdacityClient.getStudentLocations() { locations, error in
             self.mapView.removeAnnotations(self.annotations)
             self.annotations.removeAll()
@@ -90,32 +95,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-//            let app = UIApplication.shared
-            if let toOpen = view.annotation?.subtitle! {
+            if let toOpen = view.annotation?.subtitle {
                 openLink(toOpen ?? "")
             }
         }
     }
     
-//    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-//        if control == view.rightCalloutAccessoryView {
-//            if let toOpen = view.annotation?.subtitle {
-//                openLink(toOpen ?? "")
-//            }
-//        }
-//    }
-    func openLink(_ url: String) {
-        guard let url = URL(string: url), UIApplication.shared.canOpenURL(url) else {
-            showAlert(message: "Cannot open link.", title: "Invalid Link")
-            return
-        }
-        UIApplication.shared.open(url, options: [:])
-    }
-    
-    func showAlert(message: String, title: String) {
-        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alertVC, animated: true)
-    }
 
 }
