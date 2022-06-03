@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, UITextViewDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
@@ -24,9 +24,8 @@ class LoginViewController: UIViewController, UITextViewDelegate {
         
         emailTextField.text = ""
         passwordTextField.text = ""
-//        emailTextField.delegate = self
-//        passwordTextField.delegate = self
-//        buttonEnabled(false, button: loginButton)
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
     }
 
     @IBAction func loginPressed(_ sender: UIButton) {
@@ -34,16 +33,25 @@ class LoginViewController: UIViewController, UITextViewDelegate {
         UdacityClient.login(email: self.emailTextField.text ?? "", password: self.passwordTextField.text ?? "", completion: handleLoginResponse(success:error:))
     }
     
+    @IBAction func signUpPressed(_ sender: UIButton) {
+        setLoggingIn(true)
+        UIApplication.shared.open(UdacityClient.Endpoints.udacitySignUp.url, options: [:], completionHandler: nil)
+    }
+    
+    @IBAction func facebookLogin(_ sender: UIButton) {
+        buttonEnabled(false, button: facebookLogin)
+    }
+    
     func setLoggingIn(_ loggingIn: Bool) {
         if loggingIn {
             DispatchQueue.main.async {
                 self.activityIndicator.startAnimating()
-//                self.buttonEnabled(false, button: self.loginButton)
+                self.buttonEnabled(false, button: self.loginButton)
             }
         } else {
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
-//                self.buttonEnabled(true, button: self.loginButton)
+                self.buttonEnabled(true, button: self.loginButton)
             }
         }
         DispatchQueue.main.async {
@@ -61,8 +69,15 @@ class LoginViewController: UIViewController, UITextViewDelegate {
                 self.performSegue(withIdentifier: "login", sender: nil)
             }
         } else {
-//            showAlert(message: "Please enter valid credentials.", title: "Login Error")
-        }
+            DispatchQueue.main.async {
+                alert(message: "Please check your credentials and/or internet connection", title: "Login Error")
+            }
+    }
+    
+    func alert(message: String, title: String) {
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertVC, animated: true)
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -91,17 +106,17 @@ class LoginViewController: UIViewController, UITextViewDelegate {
         }
         
         if emailTextFieldIsEmpty == false && passwordTextFieldIsEmpty == false {
-//            buttonEnabled(true, button: loginButton)
+            buttonEnabled(true, button: loginButton)
         } else {
-//            buttonEnabled(false, button: loginButton)
+            buttonEnabled(false, button: loginButton)
         }
         
         return true
         
     }
     
-    @objc func textFieldShouldClear(_ textField: UITextField) -> Bool {
-//        buttonEnabled(false, button: loginButton)
+        func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        buttonEnabled(false, button: loginButton)
         if textField == emailTextField {
             emailTextFieldIsEmpty = true
         }
@@ -112,7 +127,7 @@ class LoginViewController: UIViewController, UITextViewDelegate {
         return true
     }
     
-    @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()
         } else {
@@ -123,3 +138,4 @@ class LoginViewController: UIViewController, UITextViewDelegate {
     }
 }
 
+}

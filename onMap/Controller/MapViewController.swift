@@ -13,11 +13,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    
-    
-//    var locations = [StudentInformation]()
-//    StudentsData.sharedInstance().students
-    
     var locations = StudentsData().students
     var annotations = [MKPointAnnotation]()
     
