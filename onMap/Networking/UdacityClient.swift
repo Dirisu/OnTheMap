@@ -35,7 +35,7 @@ class UdacityClient: NSObject {
             case .udacityLogin:
                 return Endpoints.base + "/session"
             case .getStudentLocations:
-                return Endpoints.base + "/StudentLocation?limit=100&order=-updatedAt"
+                return Endpoints.base + "/StudentLocationINVALID?limit=100&order=-updatedAt"
             case .addLocation:
                 return Endpoints.base + "/StudentLocation"
             case .updateLocation:
@@ -132,6 +132,9 @@ class UdacityClient: NSObject {
     
     class func getStudentLocations(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
         RequestHelpers.taskForGETRequest(url: Endpoints.getStudentLocations.url, apiType: "Parse", responseType: StudentLocation.self) { (response, error) in
+            if let error = error {
+                completion([], error)
+            }
             if let response = response {
                 completion(response.results, nil)
             } else {

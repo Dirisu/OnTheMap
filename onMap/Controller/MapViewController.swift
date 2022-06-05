@@ -51,6 +51,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func getStudentsPins() {
         self.activityIndicator.startAnimating()
         UdacityClient.getStudentLocations() { locations, error in
+            
+            if let error = error {
+                self.showAlert(message: error.localizedDescription, title: "ERROR")
+            }
+            
             self.mapView.removeAnnotations(self.annotations)
             self.annotations.removeAll()
             self.locations = locations ?? []
