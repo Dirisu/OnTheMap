@@ -8,7 +8,7 @@
 import Foundation
 
 class UdacityClient: NSObject {
-
+    
     struct Auth {
         static var sessionId: String? = nil
         static var key = ""
@@ -16,18 +16,18 @@ class UdacityClient: NSObject {
         static var lastName = ""
         static var objectId = ""
     }
-
+    
     enum Endpoints {
-
+    
         static let base = "https://onthemap-api.udacity.com/v1"
-
+        
         case udacitySignUp
         case udacityLogin
         case getStudentLocations
         case addLocation
         case updateLocation
         case getLoggedInUserProfile
-
+        
         var stringValue: String {
             switch self {
             case .udacitySignUp:
@@ -35,22 +35,35 @@ class UdacityClient: NSObject {
             case .udacityLogin:
                 return Endpoints.base + "/session"
             case .getStudentLocations:
-                return Endpoints.base + "/StudentLocation?&order=-updatedAt"
+                return Endpoints.base + "/StudentLocation?limit=100&order=-updatedAt"
             case .addLocation:
                 return Endpoints.base + "/StudentLocation"
             case .updateLocation:
                 return Endpoints.base + "/StudentLocation/" + Auth.objectId
             case .getLoggedInUserProfile:
                 return Endpoints.base + "/users/" + Auth.key
-            
+                
             }
         }
-
+        
         var url: URL {
             return URL(string: stringValue)!
         }
-
+        
     }
+    
+    override init() {
+        super.init()
+    }
+ 
+    class func shared() -> UdacityClient {
+        struct Singleton {
+            static var shared = UdacityClient()
+        }
+        return Singleton.shared
+    }
+    
+    // MARK: Log In
     
     class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         
@@ -62,15 +75,17 @@ class UdacityClient: NSObject {
                 Auth.key = response.account.key
                 getLoggedInUserProfile(completion: { (success, error) in
                     if success {
-                        print("Logged in successfully")
+                        print("Logged in user's profile fetched.")
                     }
                 })
                 completion(true, nil)
             } else {
-                completion(false, nil)
+                completion(false, error)
             }
         }
     }
+    
+    // MARK: Get Logged In User's Name
     
     class func getLoggedInUserProfile(completion: @escaping (Bool, Error?) -> Void) {
         RequestHelpers.taskForGETRequest(url: Endpoints.getLoggedInUserProfile.url, apiType: "Udacity", responseType: UserProfile.self) { (response, error) in
@@ -85,6 +100,8 @@ class UdacityClient: NSObject {
             }
         }
     }
+    
+    // MARK: Log Out
     
     class func logout(completion: @escaping () -> Void) {
         var request = URLRequest(url: Endpoints.udacityLogin.url)
@@ -111,6 +128,8 @@ class UdacityClient: NSObject {
         task.resume()
     }
     
+    // MARK: Get All Students
+    
     class func getStudentLocations(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
         RequestHelpers.taskForGETRequest(url: Endpoints.getStudentLocations.url, apiType: "Parse", responseType: StudentLocation.self) { (response, error) in
             if let response = response {
@@ -120,4 +139,30 @@ class UdacityClient: NSObject {
             }
         }
     }
+    
+    // MARK: Add a Location
+   
+    class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
+        let body = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}"
+        RequestHelpers.taskForPOSTRequest(url: Endpoints.addLocation.url, apiType: "Parse", responseType: PostStudentLocation.self, body: body, httpMethod: "POST") { (response, error) in
+            if let response = response, response.createdAt != nil {
+                Auth.objectId = response.objectId ?? ""
+                completion(true, nil)
+            }
+            completion(false, error)
+        }
+    }
+    
+    // MARK: Update Location
+ 
+    class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
+        let body = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}"
+        RequestHelpers.taskForPOSTRequest(url: Endpoints.updateLocation.url, apiType: "Parse", responseType: UpdateStudentLocation.self, body: body, httpMethod: "PUT") { (response, error) in
+            if let response = response, response.updatedAt != nil {
+                completion(true, nil)
+            }
+            completion(false, error)
+        }
+    }
+
 }

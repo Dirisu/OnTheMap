@@ -11,16 +11,12 @@ class TableViewController: UITableViewController {
     
     @IBOutlet var studentListTable: UITableView!
     
-    var students =  [StudentInformation]()
-//    var students = ["Powerbanks","Storage Devices","LED Bulbs","Laptop Bags","Keyboards","Routers","Shoes"]
+//    var students =  [StudentInformation]()
+    var students = StudentsData().students
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-
-    }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         getStudentsList()
     }
 
@@ -36,24 +32,31 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "studentviewcell", for: indexPath)
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "studentviewcell", for: indexPath) as! TableViewCell
         let student = students[indexPath.row]
-        cell.textLabel?.text = "\(student.firstName)" + " " + "\(student.lastName)"
-//        cell.detailTextLabel?.text = "\(student.mediaURL ?? "")"
+        cell.firstName.text = student.firstName
+        cell.lastName.text = student.lastName
+        cell.detailTextLabel?.text = student.mediaURL
         return cell
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let student = students[indexPath.row]
+        openLink(student.mediaURL ?? "")
     }
 
     @IBAction func logout(_ sender: UIBarButtonItem) {
-//        showActivityIndicator()
+        
         UdacityClient.logout {
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
-//                self.hideActivityIndicator()
+                
             }
         }
     }
     
-    // MARK: Refresh list
     
     @IBAction func refreshList(_ sender: UIBarButtonItem) {
         getStudentsList()
@@ -64,13 +67,14 @@ class TableViewController: UITableViewController {
     }
     
     func getStudentsList() {
-//        showActivityIndicator()
+        
         UdacityClient.getStudentLocations() {students, error in
             self.students = students ?? []
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-//                self.hideActivityIndicator()
+                
             }
         }
     }
+    
 }

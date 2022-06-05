@@ -16,6 +16,7 @@ class FinishAddLocationViewController: UIViewController, MKMapViewDelegate {
     var studentInformation: StudentInformation?
     
     override func viewDidLoad() {
+        self.activityIndicator.isHidden = true
         super.viewDidLoad()
         mapView.delegate = self
 

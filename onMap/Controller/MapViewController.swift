@@ -20,6 +20,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.activityIndicator.isHidden = true
         mapView.delegate = self
         // Do any additional setup after loading the view.
     }

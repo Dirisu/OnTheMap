@@ -21,7 +21,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         locationTextField.delegate = self
         websiteTextField.delegate = self
-//        buttonEnabled(false, button: findLocationButton)
+        activityIndicator.hidesWhenStopped = true
     }
     
     @IBAction func cancelPressed(_ sender: UIBarButtonItem) {

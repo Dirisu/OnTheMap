@@ -71,6 +71,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         } else {
             DispatchQueue.main.async {
                 alert(message: "Please check your credentials and/or internet connection", title: "Login Error")
+//                alert(message: error!.localizedDescription, title: "Login Error")
             }
     }
     
